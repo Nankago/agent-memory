@@ -1,0 +1,8 @@
+outputs/
+datasets/
+models/
+*.log
+__pycache__/
+.venv/
+
+.claude/
