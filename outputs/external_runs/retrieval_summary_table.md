@@ -1,0 +1,19 @@
+## LongMemEval
+
+| variant | retrieve_top_k | final_top_k | support_recall_at_retrieve_k | support_recall_at_final_k | support_hit_at_1 | support_mrr |
+| --- | --- | --- | --- | --- | --- | --- |
+| tfidf | 20 | 10 | 0.946667 | 0.900933 | 0.760000 | 0.828029 |
+| dense_e5 | 20 | 10 | 0.967667 | 0.909433 | 0.780000 | 0.840080 |
+| dense_e5_rerank | 20 | 10 | 0.967667 | 0.939233 | 0.854000 | 0.894816 |
+| hybrid_bge_m3 | 20 | 10 | 0.982667 | 0.950167 | 0.774000 | 0.846344 |
+| hybrid_bge_m3_rerank | 20 | 10 | 0.982667 | 0.943167 | 0.862000 | 0.901379 |
+
+## LoCoMo
+
+| variant | retrieve_top_k | final_top_k | support_recall_at_retrieve_k | support_recall_at_final_k | support_hit_at_1 | support_mrr |
+| --- | --- | --- | --- | --- | --- | --- |
+| tfidf | 20 | 10 | 0.967984 | 0.900603 | 0.628600 | 0.734738 |
+| dense_e5 | 20 | 10 | 0.920679 | 0.790157 | 0.427489 | 0.552059 |
+| dense_e5_rerank | 20 | 10 | 0.920679 | 0.813631 | 0.627590 | 0.695410 |
+| hybrid_bge_m3 | 20 | 10 | 0.976609 | 0.895966 | 0.500253 | 0.626463 |
+| hybrid_bge_m3_rerank | 20 | 10 | 0.976609 | 0.826667 | 0.629106 | 0.699308 |

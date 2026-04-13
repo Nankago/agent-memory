@@ -24,6 +24,15 @@ FINAL_TOP_K="${FINAL_TOP_K:-10}"
 BATCH_SIZE="${BATCH_SIZE:-16}"
 OUTPUT_ROOT="${OUTPUT_ROOT:-$PROJECT_ROOT/outputs/external_runs}"
 RUN_SUITE="${RUN_SUITE:-all}"
+FORMAL_FREEZE_SETTINGS="${FORMAL_FREEZE_SETTINGS:-0}"
+FORCE_RERUN="${FORCE_RERUN:-0}"
+ALLOW_CPU_FALLBACK="${ALLOW_CPU_FALLBACK:-1}"
+
+if [[ "$FORMAL_FREEZE_SETTINGS" == "1" ]]; then
+  RETRIEVE_TOP_K="20"
+  FINAL_TOP_K="10"
+  RUN_SUITE="all"
+fi
 
 case "$BENCHMARK" in
   longmemeval)
@@ -55,7 +64,23 @@ mkdir -p "$NORMALIZED_DIR" "$BENCHMARK_OUTPUT_ROOT"
 cd "$PROJECT_ROOT"
 
 export PYTHONPATH="${PROJECT_ROOT}/src:${PYTHONPATH:-}"
-export CUDA_VISIBLE_DEVICES="$GPU_ID"
+
+if [[ "$DEVICE" == cuda* ]]; then
+  if "$PYTHON_BIN" - <<'PY'
+import torch
+raise SystemExit(0 if torch.cuda.is_available() else 1)
+PY
+  then
+    export CUDA_VISIBLE_DEVICES="$GPU_ID"
+  elif [[ "$ALLOW_CPU_FALLBACK" == "1" ]]; then
+    echo "[${BENCHMARK}] CUDA unavailable, fallback to CPU"
+    DEVICE="cpu"
+    unset CUDA_VISIBLE_DEVICES || true
+  else
+    echo "[${BENCHMARK}] CUDA unavailable and ALLOW_CPU_FALLBACK=0"
+    exit 1
+  fi
+fi
 
 echo "[${BENCHMARK}] convert_raw_external"
 if [[ ! -f "$SOURCE_JSONL_PATH" ]]; then
@@ -84,10 +109,15 @@ run_variant() {
   local reranker_model_path="${4:-}"
   local run_output_dir="$BENCHMARK_OUTPUT_ROOT/$variant_name"
 
-  # Skip if already completed successfully
+  # Skip if already completed successfully unless force rerun is requested.
   if [[ -f "$run_output_dir/retrieval_summary.json" ]]; then
-    echo "[${BENCHMARK}] skip variant=${variant_name} (already done)"
-    return 0
+    if [[ "$FORCE_RERUN" == "1" ]]; then
+      echo "[${BENCHMARK}] force rerun variant=${variant_name}"
+      rm -rf "$run_output_dir"
+    else
+      echo "[${BENCHMARK}] skip variant=${variant_name} (already done)"
+      return 0
+    fi
   fi
 
   mkdir -p "$run_output_dir"
@@ -116,6 +146,31 @@ run_variant() {
 }
 
 if [[ "$RUN_SUITE" == "all" ]]; then
+  if [[ "$FORMAL_FREEZE_SETTINGS" == "1" ]]; then
+    if [[ -z "$E5_MODEL_PATH" ]]; then
+      echo "[${BENCHMARK}] formal run requires E5_MODEL_PATH for dense_e5 variants"
+      exit 1
+    fi
+    if [[ -z "$BGE_M3_MODEL_PATH" ]]; then
+      echo "[${BENCHMARK}] formal run requires BGE_M3_MODEL_PATH for hybrid_bge_m3 variants"
+      exit 1
+    fi
+    if [[ -z "$RERANKER_MODEL_PATH" ]]; then
+      echo "[${BENCHMARK}] formal run requires RERANKER_MODEL_PATH for rerank variants"
+      exit 1
+    fi
+    echo "[${BENCHMARK}] formal settings locked: RETRIEVE_TOP_K=${RETRIEVE_TOP_K}, FINAL_TOP_K=${FINAL_TOP_K}"
+    run_variant "tfidf" "tfidf"
+    run_variant "dense_e5" "dense" "$E5_MODEL_PATH"
+    run_variant "dense_e5_rerank" "dense" "$E5_MODEL_PATH" "$RERANKER_MODEL_PATH"
+    run_variant "hybrid_bge_m3" "hybrid" "$BGE_M3_MODEL_PATH"
+    run_variant "hybrid_bge_m3_rerank" "hybrid" "$BGE_M3_MODEL_PATH" "$RERANKER_MODEL_PATH"
+    echo "[${BENCHMARK}] done"
+    echo "normalized_dir=$NORMALIZED_DIR"
+    echo "benchmark_output_root=$BENCHMARK_OUTPUT_ROOT"
+    exit 0
+  fi
+
   run_variant "tfidf" "tfidf"
 
   if [[ -n "$E5_MODEL_PATH" ]]; then

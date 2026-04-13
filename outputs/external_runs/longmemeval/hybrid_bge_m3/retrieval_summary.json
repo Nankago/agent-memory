@@ -13,7 +13,7 @@
   "metrics": {
     "support_recall_at_retrieve_k": 0.9826666666666666,
     "support_recall_at_final_k": 0.9501666666666666,
-    "support_hit_at_1": 0.776,
-    "support_mrr": 0.8476420634920635
+    "support_hit_at_1": 0.774,
+    "support_mrr": 0.8463444444444445
   }
 }

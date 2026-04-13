@@ -12,8 +12,8 @@
   "final_top_k": 10,
   "metrics": {
     "support_recall_at_retrieve_k": 0.9826666666666666,
-    "support_recall_at_final_k": 0.9468333333333334,
-    "support_hit_at_1": 0.858,
-    "support_mrr": 0.899565873015873
+    "support_recall_at_final_k": 0.9431666666666667,
+    "support_hit_at_1": 0.862,
+    "support_mrr": 0.901379365079365
   }
 }

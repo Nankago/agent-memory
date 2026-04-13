@@ -84,3 +84,64 @@ Logits and embeddings are cast back to float32 before `.numpy()` to avoid downst
 | `src/memory_collapse/external_retrieval.py` | Fix #2, #3, #4, #5 |
 | `scripts/run_external_benchmark.sh` | Fix #7, Fix #8 |
 | `scripts/run_external_dual_h800.sh` | Fix #6 |
+
+---
+
+# Formal External Retrieval Freeze Run
+
+Date: 2026-04-13
+
+## 1. Formal freeze mode for benchmark script (`run_external_benchmark.sh`)
+
+Added two control flags:
+
+- `FORMAL_FREEZE_SETTINGS=1`:
+  - Force `RETRIEVE_TOP_K=20`
+  - Force `FINAL_TOP_K=10`
+  - Force `RUN_SUITE=all` (both benchmarks run the same full variant set)
+- `FORCE_RERUN=1`:
+  - If `retrieval_summary.json` already exists, delete that variant output dir and rerun instead of skipping.
+
+In formal freeze mode, the script also requires all model paths to be set and runs exactly:
+
+1. `tfidf`
+2. `dense_e5`
+3. `dense_e5_rerank`
+4. `hybrid_bge_m3`
+5. `hybrid_bge_m3_rerank`
+
+## 2. Runtime robustness: CUDA availability check with fallback (`run_external_benchmark.sh`)
+
+Added CUDA preflight:
+
+- If `DEVICE=cuda*` and `torch.cuda.is_available()` is true, keep GPU run.
+- If CUDA is unavailable and `ALLOW_CPU_FALLBACK=1` (default), switch to `DEVICE=cpu`.
+- If CUDA is unavailable and `ALLOW_CPU_FALLBACK=0`, fail fast.
+
+This avoids mid-run crashes when GPU is not visible in the current runtime.
+
+## 3. Retrieval summary aggregation script (`scripts/summarize_external_retrieval.py`)
+
+Added a new summary script to aggregate per-variant `retrieval_summary.json` into:
+
+- `outputs/external_runs/retrieval_summary_table.csv`
+- `outputs/external_runs/retrieval_summary_table.md`
+
+It is fixed to the formal variant set and metrics:
+
+- Variants: `tfidf`, `dense_e5`, `dense_e5_rerank`, `hybrid_bge_m3`, `hybrid_bge_m3_rerank`
+- Metrics:
+  - `support_recall_at_retrieve_k`
+  - `support_recall_at_final_k`
+  - `support_hit_at_1`
+  - `support_mrr`
+
+## 4. Formal rerun completed
+
+A full formal rerun was executed for both benchmarks (`LongMemEval`, `LoCoMo`) with:
+
+- `RETRIEVE_TOP_K=20`
+- `FINAL_TOP_K=10`
+- same variant set across both benchmarks
+
+All generated variant summaries in this rerun report `retrieve_top_k=20` and `final_top_k=10`.
