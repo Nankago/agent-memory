@@ -2,6 +2,8 @@
 [locomo] skip convert_raw_external (already done)
 [locomo] prepare_external
 [locomo] skip prepare_external (already done)
+[locomo] formal settings locked: RETRIEVE_TOP_K=20, FINAL_TOP_K=10
+[locomo] force rerun variant=tfidf
 [locomo] run_external_retrieval variant=tfidf
 [retrieval] 1/1986 query_id=conv-26_qa0000
 [retrieval] 2/1986 query_id=conv-26_qa0001
@@ -1995,7 +1997,7 @@
 }
 [locomo] run_external_retrieval variant=dense_e5
 `torch_dtype` is deprecated! Use `dtype` instead!
-Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 2338.40it/s]
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights:  94%|█████████▍| 187/199 [00:00<00:00, 1866.26it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 1935.44it/s]
 [1mBertModel LOAD REPORT[0m from: /gfs/space/private/wujn/Learn/models/intfloat/e5-base-v2
 Key                     | Status     |  | 
 ------------------------+------------+--+-
@@ -3995,9 +3997,10 @@ embeddings.position_ids | UNEXPECTED |  |
   "retrieval_diagnostics": "/gfs/space/private/wujn/Learn/agent_memory/outputs/external_runs/locomo/dense_e5/retrieval_diagnostics.jsonl",
   "retrieval_summary": "/gfs/space/private/wujn/Learn/agent_memory/outputs/external_runs/locomo/dense_e5/retrieval_summary.json"
 }
+[locomo] force rerun variant=dense_e5_rerank
 [locomo] run_external_retrieval variant=dense_e5_rerank
 `torch_dtype` is deprecated! Use `dtype` instead!
-Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights:  54%|█████▍    | 107/199 [00:00<00:00, 1044.51it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 1568.85it/s]
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 2138.42it/s]
 [1mBertModel LOAD REPORT[0m from: /gfs/space/private/wujn/Learn/models/intfloat/e5-base-v2
 Key                     | Status     |  | 
 ------------------------+------------+--+-
@@ -4005,7 +4008,7 @@ embeddings.position_ids | UNEXPECTED |  |
 
 [3mNotes:
 - UNEXPECTED[3m	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.[0m
-Loading weights:   0%|          | 0/393 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/393 [00:00<00:31, 12.08it/s]Loading weights:  79%|███████▊  | 309/393 [00:00<00:00, 491.98it/s]Loading weights: 100%|██████████| 393/393 [00:00<00:00, 418.44it/s]
+Loading weights:   0%|          | 0/393 [00:00<?, ?it/s]Loading weights:  23%|██▎       | 92/393 [00:00<00:00, 919.61it/s]Loading weights:  47%|████▋     | 184/393 [00:00<00:00, 904.17it/s]Loading weights:  78%|███████▊  | 307/393 [00:00<00:00, 1029.70it/s]Loading weights: 100%|██████████| 393/393 [00:00<00:00, 974.06it/s] 
 [retrieval] 1/1986 query_id=conv-26_qa0000
 /gfs/space/private/wujn/Learn/agent_memory/src/memory_collapse/external_retrieval.py:342: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
   self._torch.cuda.amp.autocast(dtype=self._torch.bfloat16)
@@ -6000,9 +6003,10 @@ embeddings.position_ids | UNEXPECTED |  |
   "retrieval_diagnostics": "/gfs/space/private/wujn/Learn/agent_memory/outputs/external_runs/locomo/dense_e5_rerank/retrieval_diagnostics.jsonl",
   "retrieval_summary": "/gfs/space/private/wujn/Learn/agent_memory/outputs/external_runs/locomo/dense_e5_rerank/retrieval_summary.json"
 }
+[locomo] force rerun variant=hybrid_bge_m3
 [locomo] run_external_retrieval variant=hybrid_bge_m3
 `torch_dtype` is deprecated! Use `dtype` instead!
-Loading weights:   0%|          | 0/391 [00:00<?, ?it/s]Loading weights:   1%|▏         | 5/391 [00:00<00:51,  7.51it/s]Loading weights:  66%|██████▌   | 257/391 [00:00<00:00, 450.74it/s]Loading weights: 100%|██████████| 391/391 [00:00<00:00, 405.51it/s]
+Loading weights:   0%|          | 0/391 [00:00<?, ?it/s]Loading weights:   1%|▏         | 5/391 [00:00<00:39,  9.76it/s]Loading weights:  62%|██████▏   | 241/391 [00:00<00:00, 519.67it/s]Loading weights:  97%|█████████▋| 378/391 [00:00<00:00, 594.10it/s]Loading weights: 100%|██████████| 391/391 [00:00<00:00, 482.61it/s]
 [retrieval] 1/1986 query_id=conv-26_qa0000
 /gfs/space/private/wujn/Learn/agent_memory/src/memory_collapse/external_retrieval.py:342: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
   self._torch.cuda.amp.autocast(dtype=self._torch.bfloat16)
@@ -7995,10 +7999,11 @@ embeddings.position_ids | UNEXPECTED |  |
   "retrieval_diagnostics": "/gfs/space/private/wujn/Learn/agent_memory/outputs/external_runs/locomo/hybrid_bge_m3/retrieval_diagnostics.jsonl",
   "retrieval_summary": "/gfs/space/private/wujn/Learn/agent_memory/outputs/external_runs/locomo/hybrid_bge_m3/retrieval_summary.json"
 }
+[locomo] force rerun variant=hybrid_bge_m3_rerank
 [locomo] run_external_retrieval variant=hybrid_bge_m3_rerank
 `torch_dtype` is deprecated! Use `dtype` instead!
-Loading weights:   0%|          | 0/391 [00:00<?, ?it/s]Loading weights:   1%|▏         | 5/391 [00:00<00:30, 12.75it/s]Loading weights:  61%|██████    | 239/391 [00:00<00:00, 631.15it/s]Loading weights:  96%|█████████▌| 375/391 [00:00<00:00, 788.29it/s]Loading weights: 100%|██████████| 391/391 [00:00<00:00, 570.23it/s]
-Loading weights:   0%|          | 0/393 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/393 [00:00<00:27, 13.86it/s]Loading weights:  66%|██████▌   | 259/393 [00:00<00:00, 461.27it/s]Loading weights: 100%|██████████| 393/393 [00:00<00:00, 454.20it/s]
+Loading weights:   0%|          | 0/391 [00:00<?, ?it/s]Loading weights:   1%|▏         | 5/391 [00:00<00:38,  9.96it/s]Loading weights:  61%|██████    | 239/391 [00:00<00:00, 525.83it/s]Loading weights:  96%|█████████▋| 377/391 [00:00<00:00, 590.48it/s]Loading weights: 100%|██████████| 391/391 [00:00<00:00, 446.71it/s]
+Loading weights:   0%|          | 0/393 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/393 [00:00<00:26, 14.40it/s]Loading weights:  63%|██████▎   | 249/393 [00:00<00:00, 458.09it/s]Loading weights:  99%|█████████▉| 391/393 [00:00<00:00, 566.95it/s]Loading weights: 100%|██████████| 393/393 [00:00<00:00, 434.32it/s]
 [retrieval] 1/1986 query_id=conv-26_qa0000
 /gfs/space/private/wujn/Learn/agent_memory/src/memory_collapse/external_retrieval.py:342: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
   self._torch.cuda.amp.autocast(dtype=self._torch.bfloat16)
