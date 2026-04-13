@@ -1,0 +1,19 @@
+{
+  "benchmarks": [
+    "locomo"
+  ],
+  "num_queries": 1986,
+  "num_queries_with_answer_support": 1979,
+  "retriever": "hybrid",
+  "retriever_model": "/gfs/space/private/wujn/Learn/models/BAAI/bge-m3",
+  "reranker_model": null,
+  "device": "cuda",
+  "retrieve_top_k": 20,
+  "final_top_k": 10,
+  "metrics": {
+    "support_recall_at_retrieve_k": 0.9768613960543009,
+    "support_recall_at_final_k": 0.8959376961101971,
+    "support_hit_at_1": 0.49924204143506823,
+    "support_mrr": 0.62608680831268
+  }
+}

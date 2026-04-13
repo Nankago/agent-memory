@@ -1,0 +1,6 @@
+nohup: ignoring input
+[dual] launching LongMemEval on GPU 0
+[dual] launching LoCoMo on GPU 1
+[dual] LongMemEval finished.
+[dual] LoCoMo finished.
+[dual] all runs finished successfully

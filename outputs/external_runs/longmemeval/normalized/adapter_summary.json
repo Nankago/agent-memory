@@ -1,0 +1,5 @@
+{
+  "benchmark": "longmemeval",
+  "num_queries": 500,
+  "num_memories": 25112
+}
