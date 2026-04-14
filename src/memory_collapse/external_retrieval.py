@@ -16,6 +16,9 @@ DEFAULT_RETRIEVE_TOP_K = 20
 DEFAULT_FINAL_TOP_K = 10
 DEFAULT_BATCH_SIZE = 16
 RRF_K = 60
+LOCOMO_MAX_CHUNK_TOKENS = 384
+LOCOMO_DEFAULT_TURN_WINDOW = 8
+LOCOMO_DEFAULT_TURN_STRIDE = 4
 
 
 @dataclass(frozen=True)
@@ -33,6 +36,13 @@ class ScoredMemory:
     memory: dict[str, Any]
     score: float
     stage: str
+
+
+@dataclass(frozen=True)
+class RetrievalUnit:
+    memory: dict[str, Any]
+    unit_id: str
+    text: str
 
 
 def load_external_cases(normalized_dir: str | Path) -> list[ExternalCase]:
@@ -99,9 +109,7 @@ def run_external_retrieval(
     diagnostics_rows: list[dict[str, Any]] = []
     per_query_metrics: list[dict[str, Any]] = []
 
-    total = len(cases)
-    for case_idx, case in enumerate(cases):
-        print(f"[retrieval] {case_idx + 1}/{total} query_id={case.query_id}", flush=True)
+    for case in cases:
         retrieved = retriever_backend.rank(case)[: max(int(retrieve_top_k), 1)]
         reranked = reranker_backend.rerank(case, retrieved)[: max(int(final_top_k), 1)] if reranker_backend else retrieved[: max(int(final_top_k), 1)]
         answer_support_ids = _answer_support_ids(case)
@@ -284,8 +292,9 @@ class _TfidfRetriever(_BaseRetriever):
             return []
         memory_texts = [str(memory.get("text", "")) for memory in case.memories]
         vectorizer = TfidfVectorizer(ngram_range=(1, 2), lowercase=True)
-        memory_matrix = vectorizer.fit_transform(memory_texts)
-        query_vector = vectorizer.transform([case.prompt])
+        all_matrix = vectorizer.fit_transform(memory_texts + [case.prompt])
+        memory_matrix = all_matrix[: len(memory_texts)]
+        query_vector = all_matrix[len(memory_texts)]
         scores = memory_matrix.dot(query_vector.T).toarray().ravel()
         ranked = sorted(
             zip(case.memories, scores, strict=False),
@@ -306,19 +315,21 @@ class _DenseRetriever(_BaseRetriever):
         transformers, torch = _load_transformer_stack()
         self._torch = torch
         self._tokenizer = transformers.AutoTokenizer.from_pretrained(model_name_or_path)
-        self._model = transformers.AutoModel.from_pretrained(
-            model_name_or_path,
-            torch_dtype=torch.bfloat16 if device != "cpu" else torch.float32,
-        )
+        self._model = transformers.AutoModel.from_pretrained(model_name_or_path)
         self._model.to(device)
         self._model.eval()
         self._prefix_queries = "e5" in model_name_or_path.lower()
-        self._use_autocast = device != "cpu"
 
     def rank(self, case: ExternalCase) -> list[ScoredMemory]:
         if not case.memories:
             return []
-        passages = [str(memory.get("text", "")) for memory in case.memories]
+        retrieval_units = _collect_retrieval_units(
+            case.memories,
+            tokenizer=self._tokenizer,
+            use_chunking=True,
+            max_tokens=LOCOMO_MAX_CHUNK_TOKENS,
+        )
+        passages = [unit.text for unit in retrieval_units]
         query_text = case.prompt
         if self._prefix_queries:
             query_text = f"query: {query_text}"
@@ -326,24 +337,11 @@ class _DenseRetriever(_BaseRetriever):
         query_embedding = self._encode_texts([query_text])[0]
         memory_embeddings = self._encode_texts(passages)
         scores = np.asarray(memory_embeddings @ query_embedding, dtype=float).ravel()
-        ranked = sorted(
-            zip(case.memories, scores, strict=False),
-            key=lambda item: (float(item[1]), -int(item[0].get("position", 0))),
-            reverse=True,
-        )
-        return [
-            ScoredMemory(memory=memory, score=float(score), stage="retrieve")
-            for memory, score in ranked
-        ]
+        return _aggregate_unit_scores(retrieval_units, scores, stage="retrieve")
 
     def _encode_texts(self, texts: list[str]) -> np.ndarray:
         batches: list[np.ndarray] = []
-        autocast_ctx = (
-            self._torch.cuda.amp.autocast(dtype=self._torch.bfloat16)
-            if self._use_autocast
-            else _null_context()
-        )
-        with self._torch.no_grad(), autocast_ctx:
+        with self._torch.no_grad():
             for start in range(0, len(texts), self.batch_size):
                 batch_texts = texts[start : start + self.batch_size]
                 tokens = self._tokenizer(
@@ -356,7 +354,7 @@ class _DenseRetriever(_BaseRetriever):
                 tokens = {key: value.to(self.device) for key, value in tokens.items()}
                 outputs = self._model(**tokens)
                 embeddings = _mean_pool(outputs.last_hidden_state, tokens["attention_mask"], self._torch)
-                embeddings = self._torch.nn.functional.normalize(embeddings.float(), p=2, dim=1)
+                embeddings = self._torch.nn.functional.normalize(embeddings, p=2, dim=1)
                 batches.append(embeddings.detach().cpu().numpy())
         return np.concatenate(batches, axis=0) if batches else np.zeros((0, 1), dtype=float)
 
@@ -396,25 +394,22 @@ class _CrossEncoderReranker:
         self.device = device
         self.batch_size = batch_size
         self._tokenizer = transformers.AutoTokenizer.from_pretrained(model_name_or_path)
-        self._model = transformers.AutoModelForSequenceClassification.from_pretrained(
-            model_name_or_path,
-            torch_dtype=torch.bfloat16 if device != "cpu" else torch.float32,
-        )
+        self._model = transformers.AutoModelForSequenceClassification.from_pretrained(model_name_or_path)
         self._model.to(device)
         self._model.eval()
-        self._use_autocast = device != "cpu"
 
     def rerank(self, case: ExternalCase, candidates: list[ScoredMemory]) -> list[ScoredMemory]:
         if not candidates:
             return []
-        pairs = [(case.prompt, str(row.memory.get("text", ""))) for row in candidates]
-        scores: list[float] = []
-        autocast_ctx = (
-            self._torch.cuda.amp.autocast(dtype=self._torch.bfloat16)
-            if self._use_autocast
-            else _null_context()
+        retrieval_units = _collect_retrieval_units(
+            [row.memory for row in candidates],
+            tokenizer=self._tokenizer,
+            use_chunking=True,
+            max_tokens=LOCOMO_MAX_CHUNK_TOKENS,
         )
-        with self._torch.no_grad(), autocast_ctx:
+        pairs = [(case.prompt, unit.text) for unit in retrieval_units]
+        scores: list[float] = []
+        with self._torch.no_grad():
             for start in range(0, len(pairs), self.batch_size):
                 batch_pairs = pairs[start : start + self.batch_size]
                 tokenized = self._tokenizer(
@@ -427,17 +422,9 @@ class _CrossEncoderReranker:
                 )
                 tokenized = {key: value.to(self.device) for key, value in tokenized.items()}
                 logits = self._model(**tokenized).logits
-                batch_scores = logits.float().squeeze(-1).detach().cpu().numpy().reshape(-1)
+                batch_scores = logits.squeeze(-1).detach().cpu().numpy().reshape(-1)
                 scores.extend(float(score) for score in batch_scores)
-        reranked = sorted(
-            zip(candidates, scores, strict=False),
-            key=lambda item: (float(item[1]), float(item[0].score)),
-            reverse=True,
-        )
-        return [
-            ScoredMemory(memory=row.memory, score=float(score), stage="rerank")
-            for row, score in reranked
-        ]
+        return _aggregate_unit_scores(retrieval_units, scores, stage="rerank")
 
 
 def _load_transformer_stack():
@@ -451,16 +438,150 @@ def _load_transformer_stack():
     return transformers, torch
 
 
-class _null_context:
-    def __enter__(self):
-        return self
-
-    def __exit__(self, *args):
-        pass
-
-
 def _mean_pool(last_hidden_state: Any, attention_mask: Any, torch_module: Any) -> Any:
     mask = attention_mask.unsqueeze(-1).expand(last_hidden_state.size()).float()
     summed = torch_module.sum(last_hidden_state * mask, dim=1)
     counts = torch_module.clamp(mask.sum(dim=1), min=1e-9)
     return summed / counts
+
+
+def _collect_retrieval_units(
+    memories: list[dict[str, Any]],
+    tokenizer: Any | None,
+    use_chunking: bool,
+    max_tokens: int,
+) -> list[RetrievalUnit]:
+    retrieval_units: list[RetrievalUnit] = []
+    for memory in memories:
+        retrieval_units.extend(
+            _memory_retrieval_units(
+                memory,
+                tokenizer=tokenizer,
+                use_chunking=use_chunking,
+                max_tokens=max_tokens,
+            )
+        )
+    return retrieval_units
+
+
+def _memory_retrieval_units(
+    memory: dict[str, Any],
+    tokenizer: Any | None,
+    use_chunking: bool,
+    max_tokens: int,
+) -> list[RetrievalUnit]:
+    if not use_chunking or str(memory.get("benchmark", "")).lower() != "locomo":
+        return [
+            RetrievalUnit(
+                memory=memory,
+                unit_id=str(memory["memory_id"]),
+                text=str(memory.get("text", "")),
+            )
+        ]
+
+    metadata = memory.get("metadata") or {}
+    turns = metadata.get("turns") or []
+    if not isinstance(turns, list) or not turns:
+        return [
+            RetrievalUnit(
+                memory=memory,
+                unit_id=str(memory["memory_id"]),
+                text=str(memory.get("text", "")),
+            )
+        ]
+
+    chunking = metadata.get("retrieval_chunking") or {}
+    turn_window = int(chunking.get("turn_window", LOCOMO_DEFAULT_TURN_WINDOW))
+    turn_stride = int(chunking.get("turn_stride", LOCOMO_DEFAULT_TURN_STRIDE))
+    chunk_texts = _build_locomo_chunk_texts(
+        turns=turns,
+        tokenizer=tokenizer,
+        max_tokens=max_tokens,
+        turn_window=turn_window,
+        turn_stride=turn_stride,
+    )
+    if not chunk_texts:
+        chunk_texts = [str(memory.get("text", ""))]
+    return [
+        RetrievalUnit(
+            memory=memory,
+            unit_id=f"{memory['memory_id']}::chunk_{chunk_index:03d}",
+            text=chunk_text,
+        )
+        for chunk_index, chunk_text in enumerate(chunk_texts)
+    ]
+
+
+def _build_locomo_chunk_texts(
+    turns: list[dict[str, Any]],
+    tokenizer: Any | None,
+    max_tokens: int,
+    turn_window: int,
+    turn_stride: int,
+) -> list[str]:
+    if not turns:
+        return []
+    window = max(int(turn_window), 1)
+    stride = max(int(turn_stride), 1)
+    starts = list(range(0, len(turns), stride))
+    last_start = max(len(turns) - window, 0)
+    if last_start not in starts:
+        starts.append(last_start)
+
+    chunk_texts: list[str] = []
+    seen_texts: set[str] = set()
+    for start in starts:
+        window_turns = turns[start : start + window]
+        if not window_turns:
+            continue
+        window_text = "\n".join(str(turn.get("text", "")) for turn in window_turns if str(turn.get("text", "")).strip())
+        if not window_text.strip():
+            continue
+        for chunk_text in _split_text_for_model(window_text, tokenizer=tokenizer, max_tokens=max_tokens):
+            normalized = chunk_text.strip()
+            if not normalized or normalized in seen_texts:
+                continue
+            seen_texts.add(normalized)
+            chunk_texts.append(normalized)
+    return chunk_texts
+
+
+def _split_text_for_model(text: str, tokenizer: Any | None, max_tokens: int) -> list[str]:
+    normalized = text.strip()
+    if not normalized:
+        return []
+    if tokenizer is None:
+        return [normalized]
+    token_ids = tokenizer(normalized, add_special_tokens=False)["input_ids"]
+    if len(token_ids) <= max_tokens:
+        return [normalized]
+    chunks: list[str] = []
+    for start in range(0, len(token_ids), max_tokens):
+        chunk_ids = token_ids[start : start + max_tokens]
+        chunk_text = tokenizer.decode(chunk_ids, skip_special_tokens=True).strip()
+        if chunk_text:
+            chunks.append(chunk_text)
+    return chunks or [normalized]
+
+
+def _aggregate_unit_scores(
+    retrieval_units: list[RetrievalUnit],
+    scores: np.ndarray | list[float],
+    stage: str,
+) -> list[ScoredMemory]:
+    best_by_memory_id: dict[str, tuple[dict[str, Any], float]] = {}
+    for unit, raw_score in zip(retrieval_units, scores, strict=False):
+        score = float(raw_score)
+        memory_id = str(unit.memory["memory_id"])
+        current = best_by_memory_id.get(memory_id)
+        if current is None or score > current[1]:
+            best_by_memory_id[memory_id] = (unit.memory, score)
+    ranked = sorted(
+        best_by_memory_id.values(),
+        key=lambda item: (item[1], -int(item[0].get("position", 0))),
+        reverse=True,
+    )
+    return [
+        ScoredMemory(memory=memory, score=score, stage=stage)
+        for memory, score in ranked
+    ]

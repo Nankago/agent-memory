@@ -9,6 +9,8 @@ from memory_collapse.io_utils import write_jsonl
 
 
 SESSION_KEY_PATTERN = re.compile(r"^session_(\d+)$")
+LOCOMO_CHUNK_TURN_WINDOW = 8
+LOCOMO_CHUNK_TURN_STRIDE = 4
 
 
 def convert_raw_external(benchmark: str, input_path: str | Path, output_path: str | Path) -> dict[str, str]:
@@ -123,6 +125,12 @@ def _convert_locomo(path: Path) -> list[dict[str, Any]]:
                         "session_date": session_record["session_date"],
                         "is_answer_support": bool(session_record["session_id"] in evidence_sessions),
                         "dialog_ids": session_record["dialog_ids"],
+                        "turns": session_record["turns"],
+                        "retrieval_chunking": {
+                            "mode": "turn_window",
+                            "turn_window": LOCOMO_CHUNK_TURN_WINDOW,
+                            "turn_stride": LOCOMO_CHUNK_TURN_STRIDE,
+                        },
                     },
                 }
                 for session_record in session_records
@@ -162,19 +170,32 @@ def _extract_locomo_sessions(conversation: dict[str, Any]) -> list[dict[str, Any
         session_date = conversation.get(f"{session_id}_date_time")
         dialog_ids: list[str] = []
         rendered_turns: list[str] = []
+        turn_records: list[dict[str, Any]] = []
         for turn in value:
             if not isinstance(turn, dict):
-                rendered_turns.append(str(turn))
+                raw_text = str(turn)
+                rendered_turns.append(raw_text)
+                turn_records.append({"text": raw_text, "dialog_ids": []})
                 continue
             speaker = str(turn.get("speaker", "unknown"))
             speaker_name = speaker_lookup.get(speaker, speaker)
             dia_id = turn.get("dia_id")
+            current_dialog_ids: list[str] = []
             if dia_id is not None:
-                dialog_ids.append(str(dia_id))
+                dialog_id = str(dia_id)
+                dialog_ids.append(dialog_id)
+                current_dialog_ids.append(dialog_id)
             text = str(turn.get("text", ""))
             if turn.get("blip_caption"):
                 text = f"{text}\n[image_caption] {turn['blip_caption']}"
-            rendered_turns.append(f"{speaker_name}: {text}")
+            rendered_turn = f"{speaker_name}: {text}"
+            rendered_turns.append(rendered_turn)
+            turn_records.append(
+                {
+                    "text": rendered_turn,
+                    "dialog_ids": current_dialog_ids,
+                }
+            )
         session_records.append(
             {
                 "session_id": session_id,
@@ -182,6 +203,7 @@ def _extract_locomo_sessions(conversation: dict[str, Any]) -> list[dict[str, Any
                 "session_date": session_date,
                 "dialog_ids": dialog_ids,
                 "text": "\n".join(rendered_turns),
+                "turns": turn_records,
             }
         )
     session_records.sort(key=lambda row: row["session_num"])
