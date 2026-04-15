@@ -8,6 +8,7 @@ __all__ = [
     "estimators",
     "evaluation",
     "external",
+    "external_pipeline",
     "external_retrieval",
     "generator",
     "io_utils",

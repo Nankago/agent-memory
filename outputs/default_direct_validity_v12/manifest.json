@@ -1,0 +1,6 @@
+{
+  "world": "D:\\\u5199\u7801\u4e13\u7528\\agent memory\\outputs\\default_direct_validity_v12\\data\\world.jsonl",
+  "memories": "D:\\\u5199\u7801\u4e13\u7528\\agent memory\\outputs\\default_direct_validity_v12\\data\\memories.jsonl",
+  "queries": "D:\\\u5199\u7801\u4e13\u7528\\agent memory\\outputs\\default_direct_validity_v12\\data\\queries.jsonl",
+  "exact_labels": "D:\\\u5199\u7801\u4e13\u7528\\agent memory\\outputs\\default_direct_validity_v12\\data\\exact_labels.jsonl"
+}

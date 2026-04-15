@@ -1,0 +1,39 @@
+{
+  "split_strategy": "episode_level",
+  "task": "relevance",
+  "num_examples": 513716,
+  "num_episodes": 30,
+  "splits": {
+    "train": {
+      "num_examples": 310337,
+      "num_episodes": 18,
+      "positive_rate": 0.006444606991754125,
+      "useful_positive_rate": 0.0031481905154718904,
+      "accuracy": 1.0,
+      "mean_probability": 0.006450766748268836,
+      "roc_auc": 1.0,
+      "average_precision": 1.0
+    },
+    "val": {
+      "num_examples": 103091,
+      "num_episodes": 6,
+      "positive_rate": 0.005829800855554801,
+      "useful_positive_rate": 0.002745147491051595,
+      "accuracy": 1.0,
+      "mean_probability": 0.005835873381609487,
+      "roc_auc": 1.0,
+      "average_precision": 1.0
+    },
+    "test": {
+      "num_examples": 100288,
+      "num_episodes": 6,
+      "positive_rate": 0.006391592214422463,
+      "useful_positive_rate": 0.003150925335035099,
+      "accuracy": 1.0,
+      "mean_probability": 0.006398271933310261,
+      "roc_auc": 1.0,
+      "average_precision": 1.0
+    }
+  },
+  "selected_checkpoint": "train_only_logreg"
+}

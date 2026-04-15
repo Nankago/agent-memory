@@ -1,0 +1,67 @@
+{
+  "split_strategy": "episode_level",
+  "write_correctness": {
+    "num_examples": 513716,
+    "num_episodes": 30,
+    "splits": {
+      "train": {
+        "num_examples": 310337,
+        "num_episodes": 18,
+        "accuracy": 0.8730154638344767,
+        "positive_rate": 0.5671028591498919,
+        "mean_probability": 0.5427255071271184,
+        "roc_auc": 0.9479718322668789
+      },
+      "val": {
+        "num_examples": 103091,
+        "num_episodes": 6,
+        "accuracy": 0.8698043476152137,
+        "positive_rate": 0.5818742664248091,
+        "mean_probability": 0.5546776055236406,
+        "roc_auc": 0.9457887739826917
+      },
+      "test": {
+        "num_examples": 100288,
+        "num_episodes": 6,
+        "accuracy": 0.8720784141671984,
+        "positive_rate": 0.5811662412252713,
+        "mean_probability": 0.5600841205311589,
+        "roc_auc": 0.9444654585840955
+      }
+    },
+    "selected_checkpoint": "train_only_logreg",
+    "task": "write"
+  },
+  "survival": {
+    "num_examples": 513716,
+    "num_episodes": 30,
+    "splits": {
+      "train": {
+        "num_examples": 310337,
+        "num_episodes": 18,
+        "accuracy": 0.8141600904822822,
+        "positive_rate": 0.6818619758520577,
+        "mean_probability": 0.5896043864294294,
+        "roc_auc": 0.9014659060616934
+      },
+      "val": {
+        "num_examples": 103091,
+        "num_episodes": 6,
+        "accuracy": 0.8101677159014851,
+        "positive_rate": 0.6639473862897828,
+        "mean_probability": 0.5804641576635045,
+        "roc_auc": 0.8988341378134939
+      },
+      "test": {
+        "num_examples": 100288,
+        "num_episodes": 6,
+        "accuracy": 0.8218331206126356,
+        "positive_rate": 0.6792038927887684,
+        "mean_probability": 0.6052093194766224,
+        "roc_auc": 0.9027960965791313
+      }
+    },
+    "selected_checkpoint": "train_only_logreg",
+    "task": "survival"
+  }
+}

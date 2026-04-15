@@ -66,8 +66,7 @@ class JsonlExternalAdapter:
                 }
             )
 
-            normalized_context = _normalize_context(context)
-            for memory_index, item in enumerate(normalized_context):
+            for memory_index, item in enumerate(_normalize_context(context)):
                 memory = ExternalMemoryItem(
                     memory_id=f"{query_id}_m{memory_index:04d}",
                     query_id=query_id,
@@ -89,7 +88,7 @@ class JsonlExternalAdapter:
             manifest_rows.append(
                 {
                     "query_id": query_id,
-                    "num_memories": len(normalized_context),
+                    "num_memories": len(_normalize_context(context)),
                 }
             )
 

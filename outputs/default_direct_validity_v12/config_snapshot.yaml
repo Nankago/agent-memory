@@ -1,0 +1,53 @@
+run_name: default
+output_root: outputs
+dataset:
+  seed: 11
+  num_entities: 20
+  time_steps: 28
+  episodes_per_level: 5
+  queries_per_episode: 18
+  memory_write_prob: 0.28
+  top_k: 20
+  composite_levels:
+  - name: s0
+    stress: 0.0
+    world_change_scale: 0.7
+    write_error_rate: 0.02
+    conflict_rate: 0.03
+    distractor_overlap: 0.03
+    query_lag_bias: 0.08
+  - name: s1
+    stress: 0.2
+    world_change_scale: 0.9
+    write_error_rate: 0.05
+    conflict_rate: 0.07
+    distractor_overlap: 0.08
+    query_lag_bias: 0.18
+  - name: s2
+    stress: 0.4
+    world_change_scale: 1.1
+    write_error_rate: 0.09
+    conflict_rate: 0.12
+    distractor_overlap: 0.15
+    query_lag_bias: 0.28
+  - name: s3
+    stress: 0.6
+    world_change_scale: 1.3
+    write_error_rate: 0.15
+    conflict_rate: 0.19
+    distractor_overlap: 0.24
+    query_lag_bias: 0.42
+  - name: s4
+    stress: 0.8
+    world_change_scale: 1.5
+    write_error_rate: 0.22
+    conflict_rate: 0.28
+    distractor_overlap: 0.34
+    query_lag_bias: 0.58
+  - name: s5
+    stress: 1.0
+    world_change_scale: 1.75
+    write_error_rate: 0.3
+    conflict_rate: 0.38
+    distractor_overlap: 0.48
+    query_lag_bias: 0.74

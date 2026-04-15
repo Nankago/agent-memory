@@ -1,0 +1,186 @@
+{
+  "split": "val",
+  "selection_metric": "accuracy",
+  "rho_mode": "learned",
+  "c_blend": 1.0,
+  "s_blend": 0.0,
+  "val_accuracy": 0.6944444444444444,
+  "val_collapse_rate": 0.3055555555555556,
+  "grid": [
+    {
+      "c_blend": 0.0,
+      "s_blend": 0.0,
+      "num_queries": 108,
+      "accuracy": 0.6666666666666666,
+      "collapse_rate": 0.33333333333333337
+    },
+    {
+      "c_blend": 0.0,
+      "s_blend": 0.25,
+      "num_queries": 108,
+      "accuracy": 0.6666666666666666,
+      "collapse_rate": 0.33333333333333337
+    },
+    {
+      "c_blend": 0.0,
+      "s_blend": 0.5,
+      "num_queries": 108,
+      "accuracy": 0.6666666666666666,
+      "collapse_rate": 0.33333333333333337
+    },
+    {
+      "c_blend": 0.0,
+      "s_blend": 0.75,
+      "num_queries": 108,
+      "accuracy": 0.6666666666666666,
+      "collapse_rate": 0.33333333333333337
+    },
+    {
+      "c_blend": 0.0,
+      "s_blend": 1.0,
+      "num_queries": 108,
+      "accuracy": 0.6666666666666666,
+      "collapse_rate": 0.33333333333333337
+    },
+    {
+      "c_blend": 0.25,
+      "s_blend": 0.0,
+      "num_queries": 108,
+      "accuracy": 0.6851851851851852,
+      "collapse_rate": 0.31481481481481477
+    },
+    {
+      "c_blend": 0.25,
+      "s_blend": 0.25,
+      "num_queries": 108,
+      "accuracy": 0.6851851851851852,
+      "collapse_rate": 0.31481481481481477
+    },
+    {
+      "c_blend": 0.25,
+      "s_blend": 0.5,
+      "num_queries": 108,
+      "accuracy": 0.6851851851851852,
+      "collapse_rate": 0.31481481481481477
+    },
+    {
+      "c_blend": 0.25,
+      "s_blend": 0.75,
+      "num_queries": 108,
+      "accuracy": 0.6851851851851852,
+      "collapse_rate": 0.31481481481481477
+    },
+    {
+      "c_blend": 0.25,
+      "s_blend": 1.0,
+      "num_queries": 108,
+      "accuracy": 0.6851851851851852,
+      "collapse_rate": 0.31481481481481477
+    },
+    {
+      "c_blend": 0.5,
+      "s_blend": 0.0,
+      "num_queries": 108,
+      "accuracy": 0.6759259259259259,
+      "collapse_rate": 0.32407407407407407
+    },
+    {
+      "c_blend": 0.5,
+      "s_blend": 0.25,
+      "num_queries": 108,
+      "accuracy": 0.6759259259259259,
+      "collapse_rate": 0.32407407407407407
+    },
+    {
+      "c_blend": 0.5,
+      "s_blend": 0.5,
+      "num_queries": 108,
+      "accuracy": 0.6759259259259259,
+      "collapse_rate": 0.32407407407407407
+    },
+    {
+      "c_blend": 0.5,
+      "s_blend": 0.75,
+      "num_queries": 108,
+      "accuracy": 0.6759259259259259,
+      "collapse_rate": 0.32407407407407407
+    },
+    {
+      "c_blend": 0.5,
+      "s_blend": 1.0,
+      "num_queries": 108,
+      "accuracy": 0.6759259259259259,
+      "collapse_rate": 0.32407407407407407
+    },
+    {
+      "c_blend": 0.75,
+      "s_blend": 0.0,
+      "num_queries": 108,
+      "accuracy": 0.6851851851851852,
+      "collapse_rate": 0.31481481481481477
+    },
+    {
+      "c_blend": 0.75,
+      "s_blend": 0.25,
+      "num_queries": 108,
+      "accuracy": 0.6759259259259259,
+      "collapse_rate": 0.32407407407407407
+    },
+    {
+      "c_blend": 0.75,
+      "s_blend": 0.5,
+      "num_queries": 108,
+      "accuracy": 0.6759259259259259,
+      "collapse_rate": 0.32407407407407407
+    },
+    {
+      "c_blend": 0.75,
+      "s_blend": 0.75,
+      "num_queries": 108,
+      "accuracy": 0.6759259259259259,
+      "collapse_rate": 0.32407407407407407
+    },
+    {
+      "c_blend": 0.75,
+      "s_blend": 1.0,
+      "num_queries": 108,
+      "accuracy": 0.6759259259259259,
+      "collapse_rate": 0.32407407407407407
+    },
+    {
+      "c_blend": 1.0,
+      "s_blend": 0.0,
+      "num_queries": 108,
+      "accuracy": 0.6944444444444444,
+      "collapse_rate": 0.3055555555555556
+    },
+    {
+      "c_blend": 1.0,
+      "s_blend": 0.25,
+      "num_queries": 108,
+      "accuracy": 0.6851851851851852,
+      "collapse_rate": 0.31481481481481477
+    },
+    {
+      "c_blend": 1.0,
+      "s_blend": 0.5,
+      "num_queries": 108,
+      "accuracy": 0.6851851851851852,
+      "collapse_rate": 0.31481481481481477
+    },
+    {
+      "c_blend": 1.0,
+      "s_blend": 0.75,
+      "num_queries": 108,
+      "accuracy": 0.6851851851851852,
+      "collapse_rate": 0.31481481481481477
+    },
+    {
+      "c_blend": 1.0,
+      "s_blend": 1.0,
+      "num_queries": 108,
+      "accuracy": 0.6851851851851852,
+      "collapse_rate": 0.31481481481481477
+    }
+  ]
+}
