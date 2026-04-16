@@ -1,0 +1,5 @@
+{
+  "benchmark": "locomo",
+  "num_queries": 1986,
+  "num_memories": 55014
+}

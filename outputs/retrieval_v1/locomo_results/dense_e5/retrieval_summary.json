@@ -1,0 +1,19 @@
+{
+  "benchmarks": [
+    "locomo"
+  ],
+  "num_queries": 1986,
+  "num_queries_with_answer_support": 1979,
+  "retriever": "dense",
+  "retriever_model": "/gfs/space/private/wujn/Learn/models/intfloat/e5-base-v2",
+  "reranker_model": null,
+  "device": "cuda",
+  "retrieve_top_k": 20,
+  "final_top_k": 10,
+  "metrics": {
+    "support_recall_at_retrieve_k": 0.978063924076365,
+    "support_recall_at_final_k": 0.9003775687410752,
+    "support_hit_at_1": 0.5780697321879738,
+    "support_mrr": 0.6952236579320965
+  }
+}

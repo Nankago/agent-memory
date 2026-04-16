@@ -1,0 +1,68 @@
+[longmemeval] convert_raw_external
+[longmemeval] skip convert_raw_external (already done)
+[longmemeval] prepare_external
+[longmemeval] skip prepare_external (already done)
+[longmemeval] run_external_retrieval single retriever=dense
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights:  53%|█████▎    | 105/199 [00:00<00:00, 1045.92it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 1388.37it/s]
+[1mBertModel LOAD REPORT[0m from: /gfs/space/private/wujn/Learn/models/intfloat/e5-base-v2
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+[3mNotes:
+- UNEXPECTED[3m	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.[0m
+{
+  "retrieval_diagnostics": "/gfs/space/private/wujn/Learn/agent_memory/outputs/retrieval_v1/longmemeval_results/dense_e5/retrieval_diagnostics.jsonl",
+  "retrieval_summary": "/gfs/space/private/wujn/Learn/agent_memory/outputs/retrieval_v1/longmemeval_results/dense_e5/retrieval_summary.json"
+}
+[longmemeval] done
+normalized_dir=/gfs/space/private/wujn/Learn/agent_memory/outputs/retrieval_v1/longmemeval_results/normalized
+benchmark_output_root=/gfs/space/private/wujn/Learn/agent_memory/outputs/retrieval_v1/longmemeval_results
+[longmemeval] convert_raw_external
+[longmemeval] skip convert_raw_external (already done)
+[longmemeval] prepare_external
+[longmemeval] skip prepare_external (already done)
+[longmemeval] run_external_retrieval single retriever=dense
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 15258.15it/s]
+[1mBertModel LOAD REPORT[0m from: /gfs/space/private/wujn/Learn/models/intfloat/e5-base-v2
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+[3mNotes:
+- UNEXPECTED[3m	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.[0m
+Loading weights:   0%|          | 0/393 [00:00<?, ?it/s]Loading weights:  39%|███▉      | 154/393 [00:00<00:00, 1505.17it/s]Loading weights:  90%|█████████ | 355/393 [00:00<00:00, 1747.57it/s]Loading weights: 100%|██████████| 393/393 [00:00<00:00, 1815.75it/s]
+{
+  "retrieval_diagnostics": "/gfs/space/private/wujn/Learn/agent_memory/outputs/retrieval_v1/longmemeval_results/dense_e5_rerank/retrieval_diagnostics.jsonl",
+  "retrieval_summary": "/gfs/space/private/wujn/Learn/agent_memory/outputs/retrieval_v1/longmemeval_results/dense_e5_rerank/retrieval_summary.json"
+}
+[longmemeval] done
+normalized_dir=/gfs/space/private/wujn/Learn/agent_memory/outputs/retrieval_v1/longmemeval_results/normalized
+benchmark_output_root=/gfs/space/private/wujn/Learn/agent_memory/outputs/retrieval_v1/longmemeval_results
+[longmemeval] convert_raw_external
+[longmemeval] skip convert_raw_external (already done)
+[longmemeval] prepare_external
+[longmemeval] skip prepare_external (already done)
+[longmemeval] run_external_retrieval single retriever=hybrid
+Loading weights:   0%|          | 0/391 [00:00<?, ?it/s]Loading weights: 100%|██████████| 391/391 [00:00<00:00, 67795.49it/s]
+{
+  "retrieval_diagnostics": "/gfs/space/private/wujn/Learn/agent_memory/outputs/retrieval_v1/longmemeval_results/hybrid_bge_m3/retrieval_diagnostics.jsonl",
+  "retrieval_summary": "/gfs/space/private/wujn/Learn/agent_memory/outputs/retrieval_v1/longmemeval_results/hybrid_bge_m3/retrieval_summary.json"
+}
+[longmemeval] done
+normalized_dir=/gfs/space/private/wujn/Learn/agent_memory/outputs/retrieval_v1/longmemeval_results/normalized
+benchmark_output_root=/gfs/space/private/wujn/Learn/agent_memory/outputs/retrieval_v1/longmemeval_results
+[longmemeval] convert_raw_external
+[longmemeval] skip convert_raw_external (already done)
+[longmemeval] prepare_external
+[longmemeval] skip prepare_external (already done)
+[longmemeval] run_external_retrieval single retriever=hybrid
+Loading weights:   0%|          | 0/391 [00:00<?, ?it/s]Loading weights: 100%|██████████| 391/391 [00:00<00:00, 58847.89it/s]
+Loading weights:   0%|          | 0/393 [00:00<?, ?it/s]Loading weights: 100%|██████████| 393/393 [00:00<00:00, 13152.69it/s]
+{
+  "retrieval_diagnostics": "/gfs/space/private/wujn/Learn/agent_memory/outputs/retrieval_v1/longmemeval_results/hybrid_bge_m3_rerank/retrieval_diagnostics.jsonl",
+  "retrieval_summary": "/gfs/space/private/wujn/Learn/agent_memory/outputs/retrieval_v1/longmemeval_results/hybrid_bge_m3_rerank/retrieval_summary.json"
+}
+[longmemeval] done
+normalized_dir=/gfs/space/private/wujn/Learn/agent_memory/outputs/retrieval_v1/longmemeval_results/normalized
+benchmark_output_root=/gfs/space/private/wujn/Learn/agent_memory/outputs/retrieval_v1/longmemeval_results

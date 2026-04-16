@@ -1,0 +1,19 @@
+{
+  "benchmarks": [
+    "longmemeval"
+  ],
+  "num_queries": 500,
+  "num_queries_with_answer_support": 500,
+  "retriever": "hybrid",
+  "retriever_model": "/gfs/space/private/wujn/Learn/models/BAAI/bge-m3",
+  "reranker_model": null,
+  "device": "cuda",
+  "retrieve_top_k": 20,
+  "final_top_k": 10,
+  "metrics": {
+    "support_recall_at_retrieve_k": 0.982,
+    "support_recall_at_final_k": 0.95,
+    "support_hit_at_1": 0.778,
+    "support_mrr": 0.847281746031746
+  }
+}
