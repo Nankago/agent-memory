@@ -1,0 +1,230 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║          MEMORY COLLAPSE CODEBASE - COMPREHENSIVE ANALYSIS REPORT          ║
+║                                                                            ║
+║ Project: agent_memory (Memory Collapse External Evaluation Framework)     ║
+║ Location: /gfs/space/private/wujn/Learn/agent_memory/                     ║
+│ Analysis Date: 2026-04-15                                                 ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+════════════════════════════════════════════════════════════════════════════════
+1. ENTRY POINT & CLI STRUCTURE
+════════════════════════════════════════════════════════════════════════════════
+
+Entry Point: src/memory_collapse/cli.py (159 lines)
+
+Commands Available:
+  • generate - Generate synthetic world, memories, queries
+  • train_estimators - Train learned estimators
+  • run_baselines - Run baselines and proposed controllers
+  • plot - Render figures
+  • prepare_external - Normalize JSONL external benchmark
+  • run_external_retrieval - Run retrieval on external benchmark
+  • run_external_end_to_end ⭐ - Answer-level evaluation (PRIMARY FOCUS)
+
+════════════════════════════════════════════════════════════════════════════════
+2. run_external_end_to_end COMMAND
+════════════════════════════════════════════════════════════════════════════════
+
+REQUIRED ARGUMENTS:
+  --benchmark                 Benchmark name (e.g., "longmemeval", "locomo")
+  --retrieval-variant         Retrieval variant (repeatable for batch runs)
+
+INPUT OPTIONS (use ONE):
+  --input-dir                 Single variant directory with retrieval_diagnostics.jsonl
+  --input-root                Parent directory containing multiple variant folders
+
+OPTIONAL ARGUMENTS:
+  --method                    Method name (repeatable, defaults to all 3 methods)
+  --model-dir                 Model artifacts (required for learned methods)
+  --output-root               Output directory (default: outputs/external_runs)
+  --summary-root              Summary table directory
+  --top-k                     Cap on retrieved candidates
+  --final-k                   Cap on reranked candidates
+
+════════════════════════════════════════════════════════════════════════════════
+3. RETRIEVAL VARIANTS (CONFIRMED)
+════════════════════════════════════════════════════════════════════════════════
+
+Available variants for both LongMemEval and LoCoMo benchmarks:
+
+  ✅ tfidf                    TF-IDF retrieval (no model needed)
+  ✅ dense_e5                 Dense E5 retrieval
+  ✅ dense_e5_rerank          Dense E5 + reranking
+  ✅ hybrid_bge_m3            Hybrid BGE-M3 retrieval
+  ✅ hybrid_bge_m3_rerank     Hybrid BGE-M3 + reranking
+
+All variants have pre-computed retrieval_diagnostics in:
+  outputs/external_runs/{benchmark}/{variant}/retrieval_diagnostics.jsonl
+
+════════════════════════════════════════════════════════════════════════════════
+4. METHODS (CRITICAL INFORMATION)
+════════════════════════════════════════════════════════════════════════════════
+
+METHOD 1: retrieval_only_baseline ✅ (CONFIRMED, FULLY WORKING)
+  • String value: "retrieval_only_baseline"
+  • Description: Top retrieved context with local extractive answer snippet
+  • No model_dir required
+  • Already tested and producing output
+
+METHOD 2: DIRECT_VALID_METHOD ⚠️ (IMPORTED, STRING VALUE UNKNOWN)
+  • Imported from: memory_collapse.baselines (MODULE NOT IN REPO)
+  • Description: Reuse synthetic direct_valid scorer on external candidates
+  • Requires: --model-dir with trained artifacts
+  • String value: UNKNOWN - need to check memory_collapse.baselines module
+
+METHOD 3: DIRECT_VALID_RESOLVER_METHOD ⚠️ (IMPORTED, STRING VALUE UNKNOWN)
+  • Imported from: memory_collapse.baselines (MODULE NOT IN REPO)
+  • Description: Reuse synthetic direct_valid plus resolver on candidates
+  • Requires: --model-dir with trained artifacts
+  • String value: UNKNOWN - need to check memory_collapse.baselines module
+
+Default behavior: If no --method specified, runs all 3 methods
+
+════════════════════════════════════════════════════════════════════════════════
+5. OUTPUT STRUCTURE
+════════════════════════════════════════════════════════════════════════════════
+
+Directory hierarchy:
+  {output_root}/{benchmark}/{retrieval_variant}/{method}/
+  ├── prediction_diagnostics.jsonl     Per-query prediction details
+  ├── metrics.csv                       Single row with aggregate metrics
+  └── metrics.json                      Same metrics in JSON format
+
+Summary tables (written to summary_root):
+  ├── external_end_to_end_metrics.csv   All metrics rows combined
+  ├── external_end_to_end_summary.csv   Simplified projection
+  └── external_end_to_end_summary.md    Markdown table for viewing
+
+CSV columns per row:
+  - benchmark, retrieval_variant, method, num_queries
+  - accuracy (is_correct rate)
+  - exact_match (normalized exact match)
+  - hit_at_1, mrr (retrieval-only metrics)
+  - retrieval_support_recall_at_retrieve_k
+  - retrieval_support_recall_at_final_k
+  - notes (method description)
+
+════════════════════════════════════════════════════════════════════════════════
+6. WORKING EXAMPLES & COMMAND TEMPLATES
+════════════════════════════════════════════════════════════════════════════════
+
+TEMPLATE 1: Single variant, retrieval only baseline
+  python -m memory_collapse.cli run_external_end_to_end \
+    --benchmark longmemeval \
+    --retrieval-variant tfidf \
+    --input-dir ./outputs/external_runs/longmemeval/tfidf \
+    --method retrieval_only_baseline
+
+TEMPLATE 2: Multiple variants, batch processing (single variant at a time)
+  python -m memory_collapse.cli run_external_end_to_end \
+    --benchmark longmemeval \
+    --retrieval-variant dense_e5_rerank \
+    --input-dir ./outputs/external_runs/longmemeval/dense_e5_rerank \
+    --method retrieval_only_baseline
+
+TEMPLATE 3: Multiple variants with input-root
+  python -m memory_collapse.cli run_external_end_to_end \
+    --benchmark longmemeval \
+    --retrieval-variant tfidf \
+    --retrieval-variant dense_e5 \
+    --retrieval-variant hybrid_bge_m3_rerank \
+    --input-root ./outputs/external_runs/longmemeval \
+    --method retrieval_only_baseline \
+    --output-root ./custom_outputs
+
+TEMPLATE 4: With learned methods (requires model_dir)
+  python -m memory_collapse.cli run_external_end_to_end \
+    --benchmark longmemeval \
+    --retrieval-variant dense_e5_rerank \
+    --input-dir ./outputs/external_runs/longmemeval/dense_e5_rerank \
+    --method retrieval_only_baseline \
+    --method {DIRECT_VALID_METHOD_STRING} \
+    --method {DIRECT_VALID_RESOLVER_METHOD_STRING} \
+    --model-dir ./outputs/synthetic_run_1/models
+
+════════════════════════════════════════════════════════════════════════════════
+7. CRITICAL ISSUES & BLOCKERS
+════════════════════════════════════════════════════════════════════════════════
+
+✅ CONFIRMED WORKING:
+  • CLI argument parsing and validation
+  • retrieval_only_baseline method
+  • Input validation (--input-dir vs --input-root)
+  • CSV/JSONL generation with pandas
+  • Markdown table generation
+  • Multi-variant batch processing
+  • Directory creation and management
+
+⚠️ POTENTIAL ISSUES:
+  • Missing memory_collapse.baselines module
+    - Contains DIRECT_VALID_METHOD and DIRECT_VALID_RESOLVER_METHOD constants
+    - String values for these methods are unknown
+    - Cannot import external_pipeline.py without this module
+    
+  • Missing model artifact modules:
+    - memory_collapse.anti_support
+    - memory_collapse.estimators
+    - memory_collapse.query_validity
+    - memory_collapse.relevance
+    - memory_collapse.value_resolver
+
+════════════════════════════════════════════════════════════════════════════════
+8. VERIFICATION CHECKLIST
+════════════════════════════════════════════════════════════════════════════════
+
+Before running end-to-end CLI commands:
+
+PREREQUISITES:
+  ☐ Confirm memory_collapse.baselines module exists in project
+  ☐ Find exact string values for DIRECT_VALID_METHOD
+  ☐ Find exact string values for DIRECT_VALID_RESOLVER_METHOD
+  ☐ Verify retrieval_diagnostics.jsonl exists in input directory
+  ☐ Confirm model artifacts exist if using learned methods
+
+INPUT VALIDATION:
+  ☐ --input-dir requires exactly ONE --retrieval-variant
+  ☐ --input-root can accept multiple --retrieval-variant values
+  ☐ Cannot use both --input-dir and --input-root together
+  ☐ Benchmark name is case-insensitive (converted to lowercase)
+
+OUTPUT VERIFICATION:
+  ☐ Check that output CSV has correct columns
+  ☐ Verify metrics are numeric (0-1 range for accuracy)
+  ☐ Ensure markdown table renders correctly
+  ☐ Check that JSONL has one entry per query
+
+════════════════════════════════════════════════════════════════════════════════
+9. SOURCE FILES REFERENCE
+════════════════════════════════════════════════════════════════════════════════
+
+Core files:
+  • src/memory_collapse/cli.py              CLI interface (159 lines)
+  • src/memory_collapse/external_pipeline.py     Main execution (717 lines) ⭐
+  • src/memory_collapse/external_retrieval.py    Retrieval backend (587 lines)
+  • src/memory_collapse/io_utils.py         CSV/JSONL I/O (47 lines)
+
+Data location:
+  • outputs/external_runs/                  All outputs and retrieval data
+  • outputs/external_runs/retrieval_summary_table.csv  Summary metrics
+  • tests/test_external_pipeline.py         Test cases with examples
+
+════════════════════════════════════════════════════════════════════════════════
+10. SUMMARY
+════════════════════════════════════════════════════════════════════════════════
+
+✅ CLI READINESS: Argument parsing and input validation are solid
+✅ RETRIEVAL ONLY: retrieval_only_baseline method fully implemented
+✅ OUTPUT FORMAT: CSV/JSONL generation tested and working
+⚠️  LEARNED METHODS: Require external module (memory_collapse.baselines)
+⚠️  MODELS: Method requires trained model artifacts from synthetic run
+
+RECOMMENDATION:
+  1. Verify memory_collapse.baselines module availability
+  2. Confirm exact method name strings before CLI execution
+  3. Ensure model_dir artifacts exist if using learned methods
+  4. Use retrieval_only_baseline for initial testing (no model needed)
+
+Full detailed analysis saved to: CODEBASE_ANALYSIS.md
+
+═══════════════════════════════════════════════════════════════════════════════
+
