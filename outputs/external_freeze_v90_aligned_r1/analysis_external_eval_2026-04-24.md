@@ -55,6 +55,27 @@ Do not use `artifacts/external_answer_models` from the bundle as the structured-
 
 ## Best Summary Results
 
+## Fit Against Expectations
+
+Overall, the results fit the main experimental expectation: the structured proposed methods are consistently competitive with or better than `retrieval_only_baseline`, reranking helps the strongest retrieval settings, and the dominant bottleneck is answer selection rather than raw support retrieval.
+
+What matches expectations:
+
+- The full method ordering is sensible: proposed structured methods are the strongest group, retrieval-only is close but usually lower, and reranked retrieval variants are generally among the top settings.
+- On LongMemEval, the best setting is `hybrid_bge_m3_rerank` with `proposed_learned_direct_valid_resolver`, reaching 0.168 accuracy versus 0.158 for retrieval-only on the same variant.
+- On LoCoMo, the best setting is `hybrid_bge_m3_rerank` with `proposed_learned_direct_valid`, reaching 0.161 accuracy versus 0.154 for retrieval-only on the same variant.
+- Non-reranked settings show clearer gains in some cases, for example LoCoMo `dense_e5`, where the resolver improves accuracy by about +0.020 over retrieval-only.
+- The main failure buckets, `supported_but_wrong` and `confident_selection_error`, are consistent with a system that often retrieves relevant evidence but still struggles to choose, normalize, or validate the final answer.
+
+What needs cautious interpretation:
+
+- Absolute accuracy is low: the best LongMemEval result is 0.168 and the best LoCoMo result is 0.161. This means the proposed method shows measurable lift, but it should not be presented as high end-to-end task performance.
+- Retrieval support recall is much higher than answer accuracy, especially on LongMemEval. This supports the conclusion that answer selection and answer normalization are the main bottlenecks.
+- Qwen and Llama reader baselines are unexpectedly weak and far below retrieval-only. This should not be interpreted as a clean model-capability result without first auditing prompts, context formatting, output parsing, and answer normalization.
+- The resolver is not a uniformly better variant. It helps the best LongMemEval setting, but on LoCoMo the non-resolver direct-valid method is slightly better. Failure buckets suggest the resolver shifts some `supported_but_wrong` errors into `confident_selection_error`, meaning it can become more decisive without always being more correct.
+
+Conclusion: the result direction is aligned with expectations for the structured method, but the absolute scores and open-model reader baselines require caveats in any report or paper-facing summary.
+
 ### LongMemEval
 
 Best accuracy:
