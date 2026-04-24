@@ -1,0 +1,2 @@
+benchmark,retrieval_variant,method,num_queries,accuracy,exact_match,hit_at_1,mrr,retrieval_support_recall_at_retrieve_k,retrieval_support_recall_at_final_k,notes
+longmemeval,hybrid_bge_m3,retrieval_only_baseline,500,0.136,0.094,0.774,0.8463444444444445,0.9826666666666666,0.9501666666666666,Top retrieved context with type-aware local answer extraction.

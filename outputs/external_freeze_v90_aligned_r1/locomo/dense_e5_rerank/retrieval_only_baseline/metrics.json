@@ -1,0 +1,13 @@
+{
+  "benchmark": "locomo",
+  "retrieval_variant": "dense_e5_rerank",
+  "method": "retrieval_only_baseline",
+  "num_queries": 1986,
+  "accuracy": 0.1540785498489426,
+  "exact_match": 0.09365558912386707,
+  "hit_at_1": 0.627589691763517,
+  "mrr": 0.6954099392831076,
+  "retrieval_support_recall_at_retrieve_k": 0.920678640503613,
+  "retrieval_support_recall_at_final_k": 0.8136310156478824,
+  "notes": "Top retrieved context with type-aware local answer extraction."
+}

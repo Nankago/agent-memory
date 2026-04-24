@@ -1,0 +1,2 @@
+benchmark,retrieval_variant,method,num_queries,accuracy,exact_match,hit_at_1,mrr,retrieval_support_recall_at_retrieve_k,retrieval_support_recall_at_final_k,notes
+locomo,dense_e5_rerank,proposed_learned_direct_valid_resolver,1986,0.1596173212487412,0.09818731117824774,0.627589691763517,0.6954099392831076,0.920678640503613,0.8136310156478824,External-adapted direct_valid with resolver blended against the retrieval prior.

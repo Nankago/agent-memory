@@ -1,0 +1,13 @@
+{
+  "benchmark": "longmemeval",
+  "retrieval_variant": "tfidf",
+  "method": "reader_llama31_8b_instruct",
+  "num_queries": 500,
+  "accuracy": 0.03,
+  "exact_match": 0.018,
+  "hit_at_1": 0.76,
+  "mrr": 0.8280285714285713,
+  "retrieval_support_recall_at_retrieve_k": 0.9466666666666667,
+  "retrieval_support_recall_at_final_k": 0.9009333333333334,
+  "notes": "Open-model reader baseline using Llama-3.1-8B-Instruct on the retrieved top-k snippets."
+}

@@ -1,0 +1,2 @@
+benchmark,retrieval_variant,method,num_queries,accuracy,exact_match,hit_at_1,mrr,retrieval_support_recall_at_retrieve_k,retrieval_support_recall_at_final_k,notes
+longmemeval,dense_e5_rerank,proposed_learned_direct_valid_resolver,500,0.16,0.11,0.854,0.8948158730158731,0.9676666666666667,0.9392333333333334,External-adapted direct_valid with resolver blended against the retrieval prior.

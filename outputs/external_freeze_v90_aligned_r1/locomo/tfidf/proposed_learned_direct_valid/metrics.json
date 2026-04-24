@@ -1,0 +1,13 @@
+{
+  "benchmark": "locomo",
+  "retrieval_variant": "tfidf",
+  "method": "proposed_learned_direct_valid",
+  "num_queries": 1986,
+  "accuracy": 0.1445115810674723,
+  "exact_match": 0.08710976837865056,
+  "hit_at_1": 0.628600303183426,
+  "mrr": 0.7347375618598457,
+  "retrieval_support_recall_at_retrieve_k": 0.9679842782716056,
+  "retrieval_support_recall_at_final_k": 0.9006033521654437,
+  "notes": "External-adapted direct_valid using retrieval priors plus learned relevance/validity signals."
+}

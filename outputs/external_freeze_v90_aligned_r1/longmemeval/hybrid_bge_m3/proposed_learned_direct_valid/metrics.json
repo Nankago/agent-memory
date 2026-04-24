@@ -1,0 +1,13 @@
+{
+  "benchmark": "longmemeval",
+  "retrieval_variant": "hybrid_bge_m3",
+  "method": "proposed_learned_direct_valid",
+  "num_queries": 500,
+  "accuracy": 0.154,
+  "exact_match": 0.102,
+  "hit_at_1": 0.774,
+  "mrr": 0.8463444444444445,
+  "retrieval_support_recall_at_retrieve_k": 0.9826666666666666,
+  "retrieval_support_recall_at_final_k": 0.9501666666666666,
+  "notes": "External-adapted direct_valid using retrieval priors plus learned relevance/validity signals."
+}

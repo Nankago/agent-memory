@@ -1,0 +1,2 @@
+benchmark,retrieval_variant,method,num_queries,accuracy,exact_match,hit_at_1,mrr,retrieval_support_recall_at_retrieve_k,retrieval_support_recall_at_final_k,notes
+locomo,tfidf,proposed_learned_direct_valid,1986,0.1445115810674723,0.08710976837865056,0.628600303183426,0.7347375618598457,0.9679842782716056,0.9006033521654437,External-adapted direct_valid using retrieval priors plus learned relevance/validity signals.

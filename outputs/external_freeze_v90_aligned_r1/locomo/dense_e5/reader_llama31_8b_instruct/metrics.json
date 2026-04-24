@@ -1,0 +1,13 @@
+{
+  "benchmark": "locomo",
+  "retrieval_variant": "dense_e5",
+  "method": "reader_llama31_8b_instruct",
+  "num_queries": 1986,
+  "accuracy": 0.00906344410876133,
+  "exact_match": 0.006042296072507553,
+  "hit_at_1": 0.42748863062152603,
+  "mrr": 0.5520591207680647,
+  "retrieval_support_recall_at_retrieve_k": 0.920678640503613,
+  "retrieval_support_recall_at_final_k": 0.7901567789098065,
+  "notes": "Open-model reader baseline using Llama-3.1-8B-Instruct on the retrieved top-k snippets."
+}

@@ -1,0 +1,2 @@
+benchmark,retrieval_variant,method,num_queries,accuracy,exact_match,hit_at_1,mrr,retrieval_support_recall_at_retrieve_k,retrieval_support_recall_at_final_k,notes
+longmemeval,dense_e5,reader_qwen25_7b_instruct,500,0.036,0.014,0.78,0.8400801587301587,0.9676666666666667,0.9094333333333334,Open-model reader baseline using Qwen2.5-7B-instruct on the retrieved top-k snippets.

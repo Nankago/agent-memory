@@ -1,0 +1,2 @@
+benchmark,retrieval_variant,method,num_queries,accuracy,exact_match,hit_at_1,mrr,retrieval_support_recall_at_retrieve_k,retrieval_support_recall_at_final_k,notes
+locomo,hybrid_bge_m3,proposed_learned_direct_valid_resolver,1986,0.1299093655589124,0.08358509566968782,0.5002526528549772,0.626462579304924,0.9766087431993237,0.8959657686496388,External-adapted direct_valid with resolver blended against the retrieval prior.

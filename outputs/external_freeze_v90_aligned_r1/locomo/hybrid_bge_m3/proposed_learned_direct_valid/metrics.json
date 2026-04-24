@@ -1,0 +1,13 @@
+{
+  "benchmark": "locomo",
+  "retrieval_variant": "hybrid_bge_m3",
+  "method": "proposed_learned_direct_valid",
+  "num_queries": 1986,
+  "accuracy": 0.13141993957703926,
+  "exact_match": 0.0850956696878147,
+  "hit_at_1": 0.5002526528549772,
+  "mrr": 0.626462579304924,
+  "retrieval_support_recall_at_retrieve_k": 0.9766087431993237,
+  "retrieval_support_recall_at_final_k": 0.8959657686496388,
+  "notes": "External-adapted direct_valid using retrieval priors plus learned relevance/validity signals."
+}

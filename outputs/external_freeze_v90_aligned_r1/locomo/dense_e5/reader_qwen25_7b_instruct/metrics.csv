@@ -1,0 +1,2 @@
+benchmark,retrieval_variant,method,num_queries,accuracy,exact_match,hit_at_1,mrr,retrieval_support_recall_at_retrieve_k,retrieval_support_recall_at_final_k,notes
+locomo,dense_e5,reader_qwen25_7b_instruct,1986,0.008559919436052367,0.004028197381671702,0.42748863062152603,0.5520591207680647,0.920678640503613,0.7901567789098065,Open-model reader baseline using Qwen2.5-7B-instruct on the retrieved top-k snippets.

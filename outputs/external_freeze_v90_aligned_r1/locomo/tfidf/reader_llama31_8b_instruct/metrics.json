@@ -1,0 +1,13 @@
+{
+  "benchmark": "locomo",
+  "retrieval_variant": "tfidf",
+  "method": "reader_llama31_8b_instruct",
+  "num_queries": 1986,
+  "accuracy": 0.0030211480362537764,
+  "exact_match": 0.004028197381671702,
+  "hit_at_1": 0.628600303183426,
+  "mrr": 0.7347375618598457,
+  "retrieval_support_recall_at_retrieve_k": 0.9679842782716056,
+  "retrieval_support_recall_at_final_k": 0.9006033521654437,
+  "notes": "Open-model reader baseline using Llama-3.1-8B-Instruct on the retrieved top-k snippets."
+}

@@ -1,0 +1,13 @@
+{
+  "benchmark": "longmemeval",
+  "retrieval_variant": "hybrid_bge_m3_rerank",
+  "method": "retrieval_only_baseline",
+  "num_queries": 500,
+  "accuracy": 0.158,
+  "exact_match": 0.104,
+  "hit_at_1": 0.862,
+  "mrr": 0.901379365079365,
+  "retrieval_support_recall_at_retrieve_k": 0.9826666666666666,
+  "retrieval_support_recall_at_final_k": 0.9431666666666667,
+  "notes": "Top retrieved context with type-aware local answer extraction."
+}

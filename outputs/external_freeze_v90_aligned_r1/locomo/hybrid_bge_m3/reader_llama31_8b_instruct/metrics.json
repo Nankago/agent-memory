@@ -1,0 +1,13 @@
+{
+  "benchmark": "locomo",
+  "retrieval_variant": "hybrid_bge_m3",
+  "method": "reader_llama31_8b_instruct",
+  "num_queries": 1986,
+  "accuracy": 0.006545820745216516,
+  "exact_match": 0.0075528700906344415,
+  "hit_at_1": 0.5002526528549772,
+  "mrr": 0.626462579304924,
+  "retrieval_support_recall_at_retrieve_k": 0.9766087431993237,
+  "retrieval_support_recall_at_final_k": 0.8959657686496388,
+  "notes": "Open-model reader baseline using Llama-3.1-8B-Instruct on the retrieved top-k snippets."
+}

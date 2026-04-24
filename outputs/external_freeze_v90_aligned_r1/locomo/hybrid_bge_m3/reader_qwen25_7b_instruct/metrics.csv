@@ -1,0 +1,2 @@
+benchmark,retrieval_variant,method,num_queries,accuracy,exact_match,hit_at_1,mrr,retrieval_support_recall_at_retrieve_k,retrieval_support_recall_at_final_k,notes
+locomo,hybrid_bge_m3,reader_qwen25_7b_instruct,1986,0.0075528700906344415,0.002014098690835851,0.5002526528549772,0.626462579304924,0.9766087431993237,0.8959657686496388,Open-model reader baseline using Qwen2.5-7B-instruct on the retrieved top-k snippets.

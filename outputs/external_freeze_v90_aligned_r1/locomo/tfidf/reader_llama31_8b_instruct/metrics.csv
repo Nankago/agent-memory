@@ -1,0 +1,2 @@
+benchmark,retrieval_variant,method,num_queries,accuracy,exact_match,hit_at_1,mrr,retrieval_support_recall_at_retrieve_k,retrieval_support_recall_at_final_k,notes
+locomo,tfidf,reader_llama31_8b_instruct,1986,0.0030211480362537764,0.004028197381671702,0.628600303183426,0.7347375618598457,0.9679842782716056,0.9006033521654437,Open-model reader baseline using Llama-3.1-8B-Instruct on the retrieved top-k snippets.

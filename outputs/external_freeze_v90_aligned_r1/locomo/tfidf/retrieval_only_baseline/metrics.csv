@@ -1,0 +1,2 @@
+benchmark,retrieval_variant,method,num_queries,accuracy,exact_match,hit_at_1,mrr,retrieval_support_recall_at_retrieve_k,retrieval_support_recall_at_final_k,notes
+locomo,tfidf,retrieval_only_baseline,1986,0.13746223564954682,0.08408862034239678,0.628600303183426,0.7347375618598457,0.9679842782716056,0.9006033521654437,Top retrieved context with type-aware local answer extraction.
