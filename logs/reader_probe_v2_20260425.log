@@ -1,0 +1,50 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/339 [00:00<?, ?it/s]Loading weights:  25%|██▌       | 85/339 [00:00<00:00, 792.56it/s]Loading weights:  55%|█████▍    | 185/339 [00:00<00:00, 869.11it/s]Loading weights:  80%|████████  | 272/339 [00:00<00:00, 849.66it/s]Loading weights: 100%|██████████| 339/339 [00:00<00:00, 907.38it/s]
+[transformers] The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+{
+  "metrics_csv": "/gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/summary_longmemeval/external_end_to_end_metrics.csv",
+  "summary_csv": "/gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/summary_longmemeval/external_end_to_end_summary.csv",
+  "summary_md": "/gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/summary_longmemeval/external_end_to_end_summary.md",
+  "diagnostics": {
+    "hybrid_bge_m3_rerank": "/gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/longmemeval/hybrid_bge_m3_rerank/reader_qwen25_7b_instruct/prediction_diagnostics.jsonl"
+  }
+}
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/339 [00:00<?, ?it/s]Loading weights:  49%|████▊     | 165/339 [00:00<00:00, 1588.56it/s]Loading weights: 100%|██████████| 339/339 [00:00<00:00, 1847.05it/s]
+[transformers] The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+{
+  "metrics_csv": "/gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/summary_locomo/external_end_to_end_metrics.csv",
+  "summary_csv": "/gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/summary_locomo/external_end_to_end_summary.csv",
+  "summary_md": "/gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/summary_locomo/external_end_to_end_summary.md",
+  "diagnostics": {
+    "hybrid_bge_m3_rerank": "/gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/locomo/hybrid_bge_m3_rerank/reader_qwen25_7b_instruct/prediction_diagnostics.jsonl"
+  }
+}
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:  74%|███████▍  | 215/291 [00:00<00:00, 2129.20it/s]Loading weights: 100%|██████████| 291/291 [00:00<00:00, 2135.82it/s]
+[transformers] The following generation flags are not valid and may be ignored: ['temperature', 'top_p']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+{
+  "metrics_csv": "/gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/summary_longmemeval/external_end_to_end_metrics.csv",
+  "summary_csv": "/gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/summary_longmemeval/external_end_to_end_summary.csv",
+  "summary_md": "/gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/summary_longmemeval/external_end_to_end_summary.md",
+  "diagnostics": {
+    "hybrid_bge_m3_rerank": "/gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/longmemeval/hybrid_bge_m3_rerank/reader_llama31_8b_instruct/prediction_diagnostics.jsonl"
+  }
+}
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights: 100%|██████████| 291/291 [00:00<00:00, 3481.37it/s]
+[transformers] The following generation flags are not valid and may be ignored: ['temperature', 'top_p']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+{
+  "metrics_csv": "/gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/summary_locomo/external_end_to_end_metrics.csv",
+  "summary_csv": "/gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/summary_locomo/external_end_to_end_summary.csv",
+  "summary_md": "/gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/summary_locomo/external_end_to_end_summary.md",
+  "diagnostics": {
+    "hybrid_bge_m3_rerank": "/gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/locomo/hybrid_bge_m3_rerank/reader_llama31_8b_instruct/prediction_diagnostics.jsonl"
+  }
+}
+wrote /gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/failure_slices/failure_rows.csv
+wrote /gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/failure_slices/failure_slices_by_question.csv
+wrote /gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/failure_slices/failure_slices_by_bucket.csv
+wrote /gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2/failure_slices/failure_slices.md
+done
+probe_root=/gfs/space/private/wujn/Learn/agent-memory-server-bundle-v90-20260422-final/outputs/external_reader_probe_v2
