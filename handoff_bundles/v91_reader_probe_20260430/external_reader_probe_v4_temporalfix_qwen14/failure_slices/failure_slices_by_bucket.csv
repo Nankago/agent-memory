@@ -1,0 +1,11 @@
+benchmark,variant,method,failure_bucket,num_queries,num_failures,accuracy,failure_rate
+locomo,hybrid_bge_m3_rerank,reader_qwen25_14b_instruct,comparative_reasoning,1,1,0.0,1.0
+locomo,hybrid_bge_m3_rerank,reader_qwen25_14b_instruct,confident_selection_error,756,756,0.0,1.0
+locomo,hybrid_bge_m3_rerank,reader_qwen25_14b_instruct,correct,336,0,1.0,0.0
+locomo,hybrid_bge_m3_rerank,reader_qwen25_14b_instruct,retrieval_miss,266,266,0.0,1.0
+locomo,hybrid_bge_m3_rerank,reader_qwen25_14b_instruct,supported_but_wrong,627,627,0.0,1.0
+longmemeval,hybrid_bge_m3_rerank,reader_qwen25_14b_instruct,comparative_reasoning,25,25,0.0,1.0
+longmemeval,hybrid_bge_m3_rerank,reader_qwen25_14b_instruct,confident_selection_error,233,233,0.0,1.0
+longmemeval,hybrid_bge_m3_rerank,reader_qwen25_14b_instruct,correct,62,0,1.0,0.0
+longmemeval,hybrid_bge_m3_rerank,reader_qwen25_14b_instruct,retrieval_miss,14,14,0.0,1.0
+longmemeval,hybrid_bge_m3_rerank,reader_qwen25_14b_instruct,supported_but_wrong,166,166,0.0,1.0

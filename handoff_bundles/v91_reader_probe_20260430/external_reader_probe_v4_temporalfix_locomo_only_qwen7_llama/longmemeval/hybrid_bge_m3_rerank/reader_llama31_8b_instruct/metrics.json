@@ -1,0 +1,13 @@
+{
+  "benchmark": "longmemeval",
+  "retrieval_variant": "hybrid_bge_m3_rerank",
+  "method": "reader_llama31_8b_instruct",
+  "num_queries": 500,
+  "accuracy": 0.146,
+  "exact_match": 0.102,
+  "hit_at_1": 0.862,
+  "mrr": 0.901379365079365,
+  "retrieval_support_recall_at_retrieve_k": 0.9826666666666666,
+  "retrieval_support_recall_at_final_k": 0.9431666666666667,
+  "notes": "Open-model reader baseline using Meta-Llama-3.1-8B-Instruct on the retrieved top-k snippets."
+}
